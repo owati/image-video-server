@@ -7,40 +7,53 @@ import cloudinary
 IMAGE_FOLDER = "./images"
 VIDEO_FOLDER = "./videos"
 
-def create_video():
-    time_stamp = datetime.datetime.now().isoformat()
-    print(time_stamp)
-    video_writer = None
-    for file in sorted(os.listdir(IMAGE_FOLDER),
-                      key=lambda item : os.path.getctime(
-                          os.path.join(IMAGE_FOLDER, item)
-                      )):
-        file_path = os.path.join(IMAGE_FOLDER, file)
-        frame = cv2.imread(file_path)
-        os.remove(file_path) # remove file after reading
-        if not video_writer:
-            hieght, width, _ = frame.shape
-            video_path = f"{VIDEO_FOLDER}/video_{time_stamp}.avi"
-            video_writer = cv2.VideoWriter(video_path, 0, 10,
-                                           (width, hieght))
+# def create_video():
+#     time_stamp = datetime.datetime.now().isoformat()
+#     print(time_stamp)
+#     video_writer = None
+#     for file in sorted(os.listdir(IMAGE_FOLDER),
+#                       key=lambda item : os.path.getctime(
+#                           os.path.join(IMAGE_FOLDER, item)
+#                       )):
+#         file_path = os.path.join(IMAGE_FOLDER, file)
+#         frame = cv2.imread(file_path)
+#         os.remove(file_path) # remove file after reading
+#         if not video_writer:
+#             hieght, width, _ = frame.shape
+#             video_path = f"{VIDEO_FOLDER}/video_{time_stamp}.avi"
+#             video_writer = cv2.VideoWriter(video_path, 0, 10,
+#                                            (width, hieght))
         
-        video_writer.write(frame)
+#         video_writer.write(frame)
     
-    cv2.destroyAllWindows()
-    if video_writer: video_writer.release()
+#     cv2.destroyAllWindows()
+#     if video_writer: video_writer.release()
     
-    for file in sorted(os.listdir(VIDEO_FOLDER),
-                key=lambda item : os.path.getctime(
-                    os.path.join(VIDEO_FOLDER, item)
-                )):
+#     for file in sorted(os.listdir(VIDEO_FOLDER),
+#                 key=lambda item : os.path.getctime(
+#                     os.path.join(VIDEO_FOLDER, item)
+#                 )):
+#         try:
+#             file_path = os.path.join(VIDEO_FOLDER, file)
+#             print(file_path)
+#             cloudinary.uploader.upload_large(
+#                 file_path,
+#                 resource_type="video",
+#                 chunk_size=6_000_000
+#             )
+#             os.remove(file_path)
+#         except:
+#             print("Could not be send", file_path)
+
+def push_image():
+    print("JOb running at", datetime.datetime.now().isoformat())
+    for file in sorted(os.listdir(IMAGE_FOLDER),
+                    key=lambda item : os.path.getctime(
+                        os.path.join(IMAGE_FOLDER, item)
+                    )):
         try:
-            file_path = os.path.join(VIDEO_FOLDER, file)
-            print(file_path)
-            cloudinary.uploader.upload_large(
-                file_path,
-                resource_type="video",
-                chunk_size=6_000_000
-            )
-            os.remove(file_path)
+            file_path = os.path.join(IMAGE_FOLDER, file)
+            cloudinary.uploader.upload_image(file_path)
+            print("Successfully pushed image ", file_path)
         except:
-            print("Could not be send", file_path)
+            print("Error pushing the image")

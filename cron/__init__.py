@@ -3,7 +3,7 @@ from apscheduler.jobstores.redis import RedisJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor
 from urllib.parse import urlparse
 import os
-from cron.create_video_job import create_video
+from cron.create_video_job import push_image
 
 
 redis_url  = urlparse(os.getenv('REDIS_URL'))
@@ -24,6 +24,6 @@ jobstores = {
 
 scheduler = BackgroundScheduler(jobstores=jobstores, executors=executors)
 
-scheduler.add_job(create_video, 'interval', minutes=1, id='create_video_job',
+scheduler.add_job(push_image, 'interval', minutes=1, id='create_video_job',
                   max_instances=1, replace_existing=True, misfire_grace_time=10)
 

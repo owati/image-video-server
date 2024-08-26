@@ -3,6 +3,7 @@ import cloudinary
 import os
 from cron import scheduler
 from cron.create_video_job import IMAGE_FOLDER
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -41,7 +42,7 @@ def receive_stream():
                 data = part[headers_end+4:]
                 
                 if "Content-Type: image/jpeg" in headers:
-                    with open(f"{IMAGE_FOLDER}/image_{os.urandom(4).hex()}.jpg", 'wb') as f:
+                    with open(f"{IMAGE_FOLDER}/image_{datetime.now().isoformat()}.jpg", 'wb') as f:
                         f.write(data)
                 
                 stream_data = stream_data[end+len(boundary)+2:]
