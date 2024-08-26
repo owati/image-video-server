@@ -47,13 +47,16 @@ VIDEO_FOLDER = "./videos"
 
 def push_image():
     print("JOb running at", datetime.datetime.now().isoformat())
-    for file in sorted(os.listdir(IMAGE_FOLDER),
-                    key=lambda item : os.path.getctime(
-                        os.path.join(IMAGE_FOLDER, item)
-                    )):
-        try:
-            file_path = os.path.join(IMAGE_FOLDER, file)
-            cloudinary.uploader.upload_image(file_path)
-            print("Successfully pushed image ", file_path)
-        except:
-            print("Error pushing the image")
+    try:
+        for file in sorted(os.listdir(IMAGE_FOLDER),
+                        key=lambda item : os.path.getctime(
+                            os.path.join(IMAGE_FOLDER, item)
+                        )):
+            try:
+                file_path = os.path.join(IMAGE_FOLDER, file)
+                cloudinary.uploader.upload_image(file_path)
+                print("Successfully pushed image ", file_path)
+            except:
+                print("Error pushing the image")
+    except:
+        print("Error running the job")
