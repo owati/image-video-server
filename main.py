@@ -16,6 +16,10 @@ cloudinary.config(
     secure=True
 )
 
+@app.route("/ping")
+def pong():
+    return "pong"
+
 @app.route('/live-stream', methods=['POST'])
 def receive_stream():
     boundary = request.headers.get('Content-Type').split('boundary=')[-1]
